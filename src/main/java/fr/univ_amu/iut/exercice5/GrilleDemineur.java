@@ -55,10 +55,10 @@ public class GrilleDemineur {
     // TODO exercice 5 : remplir resultat avec une ligne annotée par ligne d'entrée.
     //
     // Pour chaque case (ligne, col) :
-    //   - si c'est une mine ('*'), laisser '*'
-    //   - sinon compter les mines dans les 8 cases voisines (en gérant les bords)
-    //   - si le compte est > 0, écrire ce chiffre
-    //   - si le compte est 0, écrire un espace
+    // - si c'est une mine ('*'), laisser '*'
+    // - sinon compter les mines dans les 8 cases voisines (en gérant les bords)
+    // - si le compte est > 0, écrire ce chiffre
+    // - si le compte est 0, écrire un espace
     //
     // Astuce : une méthode privée compterMinesAdjacentes(int, int) facilite
     // la gestion des bords et rend le code testable.

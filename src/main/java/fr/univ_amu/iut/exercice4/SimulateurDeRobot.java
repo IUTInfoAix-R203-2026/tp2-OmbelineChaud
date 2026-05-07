@@ -31,6 +31,12 @@ public class SimulateurDeRobot {
   public void executer(String commandes) {
     // TODO exercice 4 : appliquer chaque commande au robot l'une après l'autre.
     // Bonus : levez IllegalArgumentException pour tout caractère autre que R, L, A.
+    for (char mouvement : commandes.toCharArray()) {
+      if (mouvement == 'R') this.robot.tournerADroite();
+      else if (mouvement == 'L') this.robot.tournerAGauche();
+      else if (mouvement == 'A') this.robot.avancer();
+      else throw new IllegalArgumentException("Mouvement invalide");
+    }
   }
 
   public Robot getRobot() {
