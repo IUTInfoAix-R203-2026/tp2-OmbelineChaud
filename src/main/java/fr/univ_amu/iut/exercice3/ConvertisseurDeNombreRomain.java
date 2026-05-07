@@ -34,6 +34,19 @@ public class ConvertisseurDeNombreRomain {
    * @throws IllegalArgumentException si la chaîne contient un symbole invalide ou une soustraction
    *     interdite
    */
+  private int tmp = 0;
+
+  private int valeurDe(char c) {
+    if (c == 'I') return 1;
+    if (c == 'V') return 5;
+    if (c == 'X') return 10;
+    if (c == 'L') return 50;
+    if (c == 'C') return 100;
+    if (c == 'D') return 500;
+    if (c == 'M') return 1000;
+    throw new IllegalArgumentException("Symbole invalide: " + c);
+  }
+
   public int enNombreArabe(String chiffreRomain) {
     int total = 0;
     // TODO exercice 3 : remplir total en parcourant la chaîne.
@@ -47,6 +60,15 @@ public class ConvertisseurDeNombreRomain {
     //
     // Pour les exceptions : une soustraction est valide seulement pour
     // I avant V/X, X avant L/C, C avant D/M. Tout le reste est invalide.
+
+    for (char c : chiffreRomain.toCharArray()) {
+      int val = valeurDe(c);
+      if (tmp != 0 && val > tmp) {
+        if (val == tmp * 5 || val == tmp * 10) total = total + val - 2 * tmp;
+        else throw new IllegalArgumentException("Symbole invalide dans cet ordre: " + c);
+      } else total += val;
+      tmp = val;
+    }
     return total;
   }
 }
