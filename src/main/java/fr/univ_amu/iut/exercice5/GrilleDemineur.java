@@ -42,8 +42,38 @@ public class GrilleDemineur {
    *     {@code ' '} ou {@code '*'}, ou si les lignes ont des longueurs différentes
    */
   public GrilleDemineur(List<String> grilleInitiale) {
+    if (grilleInitiale == null) throw new IllegalArgumentException("grille vide");
+    for (String ligne : grilleInitiale) {
+      if (ligne == null) throw new IllegalArgumentException("Ligne nulle");
+      if (ligne.length() != grilleInitiale.get(0).length())
+        throw new IllegalArgumentException("Lignes de taille différentes");
+      for (char c : ligne.toCharArray()) {
+        if (c != ' ' && c != '*') throw new IllegalArgumentException("Symbole invalide" + c);
+      }
+    }
     // TODO exercice 5 : valider l'entrée puis stocker la grille.
     this.grille = grilleInitiale == null ? List.of() : List.copyOf(grilleInitiale);
+  }
+
+  private int compterMinesAdjacentes(int ligne, int colonne) {
+    int hauteur = grille.size();
+    int largeur = grille.get(0).length();
+    int mines = 0;
+    // on entre dans les lignes
+    for (int i = -1; i <= 1; i++) {
+      // on entre dans les colonnes
+      for (int j = -1; j <= 1; j++) {
+        if (i == 0 && j == 0) continue;
+        int voisinLigne = ligne + i;
+        int voisinColonne = colonne + j;
+        if (voisinLigne >= 0
+            && voisinLigne < hauteur
+            && voisinColonne >= 0
+            && voisinColonne < largeur
+            && grille.get(voisinLigne).charAt(voisinColonne) == '*') mines++;
+      }
+    }
+    return mines;
   }
 
   /**
@@ -52,6 +82,9 @@ public class GrilleDemineur {
    */
   public List<String> getRepresentationAnnotee() {
     List<String> resultat = new ArrayList<>(grille.size());
+    if (grille.isEmpty()) return resultat;
+    int hauteur = grille.size();
+    int largeur = grille.get(0).length();
     // TODO exercice 5 : remplir resultat avec une ligne annotée par ligne d'entrée.
     //
     // Pour chaque case (ligne, col) :
@@ -62,6 +95,26 @@ public class GrilleDemineur {
     //
     // Astuce : une méthode privée compterMinesAdjacentes(int, int) facilite
     // la gestion des bords et rend le code testable.
+    // on entre dans les lignes
+    for (int i = 0; i < hauteur; i++) {
+      String ligne = grille.get(i);
+      StringBuilder ligneAnnotee = new StringBuilder(largeur);
+      // on entre dans les colonnes
+      for (int j = 0; j < largeur; j++) {
+        char symbole = ligne.charAt(j);
+        if (symbole == '*') ligneAnnotee.append('*');
+        else {
+          int minesAdjacentes = compterMinesAdjacentes(i, j);
+          if (minesAdjacentes > 0) {
+            char chiffre = (char) ('0' + minesAdjacentes);
+            ligneAnnotee.append(chiffre);
+          } else {
+            ligneAnnotee.append(' ');
+          }
+        }
+      }
+      resultat.add(ligneAnnotee.toString());
+    }
     return resultat;
   }
 }
